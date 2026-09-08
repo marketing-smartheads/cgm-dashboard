@@ -24,8 +24,9 @@ export async function GET(request: Request) {
       auth,
     });
 
-    // Haal het service account e-mailadres op voor eventuele weergave in de UI
-    const clientEmail = (await auth.getClient()).email || 'jouw-service-account@...';
+    // Haal het service account e-mailadres op met type casting naar any
+    const authClient = await auth.getClient() as any;
+    const clientEmail = authClient.email || 'jouw-service-account@...';
     const siteUrl = process.env.SEARCH_CONSOLE_PROPERTY || 'https://dentadmin.be/';
 
     const response = await searchconsole.searchanalytics.query({
@@ -46,14 +47,13 @@ export async function GET(request: Request) {
   } catch (error: any) {
     console.error('Search Console API Fout:', error.message);
 
-    // Controleer of het om een permissie-fout gaat (403 / API niet ingeschakeld / geen toegang)
     const isAuthError = error.code === 403 || error.status === 403 || error.message?.includes('Forbidden');
 
-    // Probeer het service account e-mailadres te achterhalen voor de kopieer-knop
     let clientEmail = '';
     try {
       const auth = new google.auth.GoogleAuth({ scopes: ['https://www.googleapis.com/auth/webmasters.readonly'] });
-      clientEmail = (await auth.getClient()).email || '';
+      const authClient = await auth.getClient() as any;
+      clientEmail = authClient.email || '';
     } catch (e) {}
 
     return NextResponse.json(
