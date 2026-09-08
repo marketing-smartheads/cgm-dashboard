@@ -15,7 +15,12 @@ export async function GET(request: Request) {
     const startDateString = startDate.toISOString().split('T')[0];
     const endDateString = new Date().toISOString().split('T')[0];
 
+    // Lees de JSON-credentials uit de omgevingsvariabele voor Vercel
+    const credentialsEnv = process.env.GOOGLE_APPLICATION_CREDENTIALS;
+    const credentials = credentialsEnv ? JSON.parse(credentialsEnv) : undefined;
+
     const auth = new google.auth.GoogleAuth({
+      credentials,
       scopes: ['https://www.googleapis.com/auth/webmasters.readonly'],
     });
 
@@ -24,7 +29,6 @@ export async function GET(request: Request) {
       auth,
     });
 
-    // Haal het service account e-mailadres op met type casting naar any
     const authClient = await auth.getClient() as any;
     const clientEmail = authClient.email || 'jouw-service-account@...';
     const siteUrl = process.env.SEARCH_CONSOLE_PROPERTY || 'https://dentadmin.be/';
@@ -51,7 +55,12 @@ export async function GET(request: Request) {
 
     let clientEmail = '';
     try {
-      const auth = new google.auth.GoogleAuth({ scopes: ['https://www.googleapis.com/auth/webmasters.readonly'] });
+      const credentialsEnv = process.env.GOOGLE_APPLICATION_CREDENTIALS;
+      const credentials = credentialsEnv ? JSON.parse(credentialsEnv) : undefined;
+      const auth = new google.auth.GoogleAuth({
+        credentials,
+        scopes: ['https://www.googleapis.com/auth/webmasters.readonly'],
+      });
       const authClient = await auth.getClient() as any;
       clientEmail = authClient.email || '';
     } catch (e) {}
