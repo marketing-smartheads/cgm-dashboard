@@ -1,62 +1,54 @@
 import { NextResponse } from 'next/server';
-import { BetaAnalyticsDataClient } from '@google-analytics/data';
-
-const analyticsDataClient = new BetaAnalyticsDataClient();
-const PROPERTY_ID = process.env.GA4_PROPERTY_ID || '386204911';
+import { google } from 'googleapis';
+import { getGoogleAuth } from '@/lib/googleAuth';
 
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const rangeParam = searchParams.get('range') || '30 dagen';
 
-    // Bepaal de juiste startdatum op basis van de frontend selectie
-    let startDate = '30daysAgo';
-    if (rangeParam.includes('7')) {
-      startDate = '7daysAgo';
-    } else if (rangeParam.includes('3') && (rangeParam.includes('maand') || rangeParam.includes('maanden'))) {
-      startDate = '90daysAgo'; // 3 maanden = 90 dagen
+    let daysAgo = 30;
+    if (rangeParam.includes('7')) daysAgo = 7;
+    else if (rangeParam.includes('3') && (rangeParam.includes('maand') || rangeParam.includes('maanden'))) daysAgo = 90;
+
+    const startDateString = `${daysAgo}daysAgo`;
+    const endDateString = 'today';
+
+    // Gebruik de juiste GA4 scope
+    const auth = getGoogleAuth(['https://www.googleapis.com/auth/analytics.readonly']);
+
+    const analyticsdata = google.analyticsdata({
+      version: 'v1beta',
+      auth,
+    });
+
+    const propertyId = process.env.GA_PROPERTY_ID;
+    if (!propertyId) {
+      throw new Error('GA_PROPERTY_ID environment variable is missing.');
     }
 
-    // 1. Haal de totalen op (Actieve gebruikers & Paginaweergaves)
-    const [totalsResponse] = await analyticsDataClient.runReport({
-      property: `properties/${PROPERTY_ID}`,
-      dateRanges: [{ startDate: startDate, endDate: 'today' }],
-      metrics: [
-        { name: 'activeUsers' },
-        { name: 'screenPageViews' },
-      ],
-    });
-
-    // 2. Haal de trend per dag op voor de grafiek
-    const [trendResponse] = await analyticsDataClient.runReport({
-      property: `properties/${PROPERTY_ID}`,
-      dateRanges: [{ startDate: startDate, endDate: 'today' }],
-      dimensions: [{ name: 'date' }],
-      metrics: [
-        { name: 'activeUsers' },
-        { name: 'screenPageViews' },
-      ],
-      orderBys: [{ dimension: { dimensionName: 'date' }, desc: false }],
-    });
-
-    // 3. Haal de top pagina's op uit GA4
-    const [pagesResponse] = await analyticsDataClient.runReport({
-      property: `properties/${PROPERTY_ID}`,
-      dateRanges: [{ startDate: startDate, endDate: 'today' }],
-      dimensions: [{ name: 'pagePath' }, { name: 'pageTitle' }],
-      metrics: [{ name: 'screenPageViews' }],
-      orderBys: [{ metric: { metricName: 'screenPageViews' }, desc: true }],
-      limit: 5, // Top 5 pagina's
+    const response = await analyticsdata.properties.runReport({
+      property: `properties/${propertyId}`,
+      requestBody: {
+        dateRanges: [{ startDate: startDateString, endDate: endDateString }],
+        metrics: [{ name: 'activeUsers' }, { name: 'screenPageViews' }],
+      },
     });
 
     return NextResponse.json({
       success: true,
-      totals: totalsResponse,
-      trend: trendResponse,
-      pages: pagesResponse,
+      data: response.data,
     });
   } catch (error: any) {
-    console.error('Fout bij ophalen GA4 data:', error);
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    console.error('Analytics API Fout:', error.message);
+
+    return NextResponse.json(
+      {
+        success: false,
+        error: error.message,
+        message: 'Fout bij het ophalen van Google Analytics data.',
+      },
+      { status: 500 }
+    );
   }
 }
