@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { google } from 'googleapis';
+import { getGoogleAuth } from '@/lib/googleAuth';
 
 export async function GET(request: Request) {
   try {
@@ -15,14 +16,7 @@ export async function GET(request: Request) {
     const startDateString = startDate.toISOString().split('T')[0];
     const endDateString = new Date().toISOString().split('T')[0];
 
-    // Lees de JSON-credentials uit de omgevingsvariabele voor Vercel
-    const credentialsEnv = process.env.GOOGLE_APPLICATION_CREDENTIALS;
-    const credentials = credentialsEnv ? JSON.parse(credentialsEnv) : undefined;
-
-    const auth = new google.auth.GoogleAuth({
-      credentials,
-      scopes: ['https://www.googleapis.com/auth/webmasters.readonly'],
-    });
+    const auth = getGoogleAuth(['https://www.googleapis.com/auth/webmasters.readonly']);
 
     const searchconsole = google.searchconsole({
       version: 'v1',
@@ -55,12 +49,7 @@ export async function GET(request: Request) {
 
     let clientEmail = '';
     try {
-      const credentialsEnv = process.env.GOOGLE_APPLICATION_CREDENTIALS;
-      const credentials = credentialsEnv ? JSON.parse(credentialsEnv) : undefined;
-      const auth = new google.auth.GoogleAuth({
-        credentials,
-        scopes: ['https://www.googleapis.com/auth/webmasters.readonly'],
-      });
+      const auth = getGoogleAuth(['https://www.googleapis.com/auth/webmasters.readonly']);
       const authClient = await auth.getClient() as any;
       clientEmail = authClient.email || '';
     } catch (e) {}

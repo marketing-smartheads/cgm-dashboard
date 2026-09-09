@@ -2,17 +2,18 @@ import { google } from 'googleapis';
 
 export function getGoogleAuth(scopes: string[]) {
   const clientEmail = process.env.GOOGLE_CLIENT_EMAIL;
-  let privateKey = process.env.GOOGLE_PRIVATE_KEY;
 
-  // Fallback als iemand toch de oude JSON in GOOGLE_APPLICATION_CREDENTIALS heeft gezet
+  // Voorkeur: base64-encoded key (voorkomt newline/quote-problemen op Vercel)
+  let privateKey: string | undefined;
+  if (process.env.GOOGLE_PRIVATE_KEY_B64) {
+    privateKey = Buffer.from(process.env.GOOGLE_PRIVATE_KEY_B64, 'base64').toString('utf-8');
+  } else if (process.env.GOOGLE_PRIVATE_KEY) {
+    privateKey = process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n');
+  }
+
   const credentialsEnv = process.env.GOOGLE_APPLICATION_CREDENTIALS;
 
   if (clientEmail && privateKey) {
-    // Zorg ervoor dat \n letterlijke tekens worden omgezet naar echte regeleinden
-    if (privateKey.includes('\\n')) {
-      privateKey = privateKey.replace(/\\n/g, '\n');
-    }
-
     return new google.auth.GoogleAuth({
       credentials: {
         client_email: clientEmail,
@@ -28,15 +29,9 @@ export function getGoogleAuth(scopes: string[]) {
       if (credentials.private_key && credentials.private_key.includes('\\n')) {
         credentials.private_key = credentials.private_key.replace(/\\n/g, '\n');
       }
-      return new google.auth.GoogleAuth({
-        credentials,
-        scopes,
-      });
+      return new google.auth.GoogleAuth({ credentials, scopes });
     } else {
-      return new google.auth.GoogleAuth({
-        keyFile: credentialsEnv,
-        scopes,
-      });
+      return new google.auth.GoogleAuth({ keyFile: credentialsEnv, scopes });
     }
   }
 
