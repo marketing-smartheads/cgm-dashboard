@@ -2,7 +2,7 @@
 import { NextResponse } from 'next/server';
 import { GoogleGenAI } from '@google/genai';
 
-const ai = new GoogleGenAI();
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
 async function generateWithRetry(params: any, retries = 3, delay = 1000): Promise<any> {
   try {
@@ -19,6 +19,10 @@ async function generateWithRetry(params: any, retries = 3, delay = 1000): Promis
 
 export async function POST(request: Request) {
   try {
+    if (!process.env.GEMINI_API_KEY) {
+      throw new Error('GEMINI_API_KEY environment variable is missing.');
+    }
+
     const { messages, agentRole, agentContext } = await request.json();
 
     const systemInstruction = `Je bent een gespecialiseerde AI Marketing Agent in het Dentadmin Performance Platform.
