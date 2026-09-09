@@ -14,11 +14,11 @@ const agents = [
 ];
 
 const welcomeSentences = [
-  "Laten we aan de slag gaan, Bas.",
-  "Wat gaan we vandaag bouwen, Bas?",
-  "Klaar om nieuwe resultaten te boeken, Bas?",
-  "Welke data gaan we vandaag analyseren, Bas?",
-  "Tijd om knopen door te hakken, Bas."
+  "Laten we aan de slag gaan.",
+  "Wat gaan we vandaag bouwen?",
+  "Klaar om nieuwe resultaten te boeken?",
+  "Welke data gaan we vandaag analyseren?",
+  "Tijd om knopen door te hakken."
 ];
 
 interface Session {
@@ -117,6 +117,15 @@ function TrashIcon() {
     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <polyline points="3 6 5 6 21 6" />
       <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+    </svg>
+  );
+}
+
+function UserIcon({ size = 14 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+      <circle cx="12" cy="7" r="4" />
     </svg>
   );
 }
@@ -474,7 +483,7 @@ export default function Home() {
                 <option>7 dagen</option><option>30 dagen</option><option>3 maanden</option>
               </select>
             )}
-            <button className="avatar" title="Profiel" style={{borderRadius: '50%'}}>B</button>
+            <button className="avatar" title="Profiel" style={{borderRadius: '50%'}}><UserIcon size={16}/></button>
           </div>
         </header>
 
@@ -561,10 +570,9 @@ export default function Home() {
                   <div className="card-head"><div><h3>SEO zoekwoorden</h3><p>Rechtstreeks uit Search Console</p></div></div>
                   {seoError === 'GEEN_TOEGANG_SEARCH_CONSOLE' || seoKeywords.length === 0 ? (
                     <div style={{padding: '24px', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '200px'}}>
-                      <div style={{background: 'rgba(245, 158, 11, 0.1)', color: '#d97706', padding: '10px', borderRadius: '6px', marginBottom: '12px'}}><Icon name="search" size={20}/></div>
-                      <h4 style={{fontSize: '14px', fontWeight: '600', color: '#111', marginBottom: '4px'}}>Search Console Toegang Vereist</h4>
-                      <p style={{fontSize: '12px', color: '#6b7280', maxWidth: '280px', marginBottom: '16px', lineHeight: '1.4'}}>Dit dashboard heeft nog geen rechten om data op te halen voor dentadmin.be.</p>
-                      <a href={`https://search.google.com/search-console?resource_id=${encodeURIComponent('https://dentadmin.be/')}`} target="_blank" rel="noopener noreferrer" style={{background: '#2563eb', color: '#fff', textDecoration: 'none', borderRadius: '6px', padding: '8px 16px', fontSize: '12px', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '6px'}}>Open Search Console ↗</a>
+                      <div style={{background: '#f1f5f9', color: '#64748b', padding: '10px', borderRadius: '6px', marginBottom: '12px'}}><Icon name="search" size={20}/></div>
+                      <h4 style={{fontSize: '14px', fontWeight: '600', color: '#111', marginBottom: '4px'}}>Binnenkort beschikbaar</h4>
+                      <p style={{fontSize: '12px', color: '#6b7280', maxWidth: '280px', lineHeight: '1.4'}}>De koppeling met Search Console wordt op een later moment toegevoegd.</p>
                     </div>
                   ) : (
                     <div className="table">
@@ -634,7 +642,7 @@ export default function Home() {
             <div style={{display: 'flex', flexDirection: 'column', gap: '24px'}}>
               <div className="hero-row">
                 <div><p className="muted">Google Search Console · Zoekwoordprestaties · {range}</p><h2>SEO Zoekwoorden & Posities</h2></div>
-                <div className="updated"><span className="live-dot" style={{ background: '#ef4444' }}/>Search Console Verbonden</div>
+                <div className="updated"><span className="live-dot" style={{ background: '#94a3b8' }}/>Binnenkort beschikbaar</div>
               </div>
 
               <div style={{display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: '12px'}}>
@@ -656,10 +664,9 @@ export default function Home() {
                 <div className="card-head"><div><h3>Zoekwoorden Overzicht</h3><p>Live rankings, klikken en CTR</p></div></div>
                 {seoError === 'GEEN_TOEGANG_SEARCH_CONSOLE' || seoKeywords.length === 0 ? (
                   <div style={{padding: '32px', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '220px'}}>
-                    <div style={{background: 'rgba(245, 158, 11, 0.1)', color: '#d97706', padding: '10px', borderRadius: '6px', marginBottom: '12px'}}><Icon name="search" size={20}/></div>
-                    <h4 style={{fontSize: '14px', fontWeight: '600', color: '#111', marginBottom: '4px'}}>Search Console Toegang Vereist</h4>
-                    <p style={{fontSize: '12px', color: '#6b7280', maxWidth: '280px', marginBottom: '16px', lineHeight: '1.4'}}>Dit dashboard heeft nog geen rechten om data op te halen voor dentadmin.be.</p>
-                    <a href={`https://search.google.com/search-console?resource_id=${encodeURIComponent('https://dentadmin.be/')}`} target="_blank" rel="noopener noreferrer" style={{background: '#2563eb', color: '#fff', textDecoration: 'none', borderRadius: '6px', padding: '8px 16px', fontSize: '12px', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '6px'}}>Open Search Console ↗</a>
+                    <div style={{background: '#f1f5f9', color: '#64748b', padding: '10px', borderRadius: '6px', marginBottom: '12px'}}><Icon name="search" size={20}/></div>
+                    <h4 style={{fontSize: '14px', fontWeight: '600', color: '#111', marginBottom: '4px'}}>Binnenkort beschikbaar</h4>
+                    <p style={{fontSize: '12px', color: '#6b7280', maxWidth: '280px', lineHeight: '1.4'}}>De koppeling met Search Console wordt op een later moment toegevoegd.</p>
                   </div>
                 ) : (
                   <div className="table" style={{marginTop: '16px'}}>
@@ -817,7 +824,7 @@ export default function Home() {
                   <div className="messages">
                     {currentMessages.length === 0 && !isCurrentLoading ? (
                       <div className="empty-chat">
-                        <h2>{selectedAgent ? welcomeSentence : "Waar kan ik je vandaag mee helpen, Bas?"}</h2>
+                        <h2>{selectedAgent ? welcomeSentence : "Waar kan ik je vandaag mee helpen?"}</h2>
                         <p>{selectedAgent ? `Selecteer hierboven een snelle actie of typ hieronder direct je opdracht in voor ${selectedAgent.name}.` : "Typ hieronder je vraag of instructie en de AI assistent staat direct voor je klaar."}</p>
                       </div>
                     ) : (
@@ -827,7 +834,7 @@ export default function Home() {
                             className="msg-avatar"
                             style={{ background: msg.role === 'user' ? '#0F172A' : (selectedAgent ? selectedAgent.color : '#2563eb') }}
                           >
-                            {msg.role === 'user' ? 'B' : (selectedAgent ? selectedAgent.initial : 'D')}
+                            {msg.role === 'user' ? <UserIcon size={14}/> : (selectedAgent ? selectedAgent.initial : 'D')}
                           </div>
 
                           <div className={`bubble ${msg.role}`} style={msg.role === 'assistant' ? ({ ['--agent-color' as any]: selectedAgent ? selectedAgent.color : '#2563eb' }) : undefined}>

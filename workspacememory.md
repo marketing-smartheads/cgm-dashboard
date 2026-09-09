@@ -1,6 +1,6 @@
 # Workspace Memory
 This file is maintained automatically by Code Janitor so Claude, Codex, Bob, and any other AI agent can reuse repo context without rescanning everything from scratch.
-Generated: 2026-09-09T18:57:43.917Z
+Generated: 2026-09-09T19:09:10.657Z
 Workspace: dentadmin-ai-dashboard
 Workspace root: c:\Projects\NextJS\dentadmin-ai-dashboard
 Refresh reason: tracked-change
@@ -16,13 +16,13 @@ Structured manifest: workspace.json
 - Audience: any AI agent working in this repository can treat this file as the current handoff ledger.
 - Graphify report: not available yet
 - Graphify graph: not available yet
-- Last activity: 2026-09-09T18:57:41.485Z
+- Last activity: 2026-09-09T19:09:08.131Z
 ## Workspace Focus
-- Active file in focus: app/api/analytics/route.ts
+- Active file in focus: app/page.tsx
 - Hottest files right now: app/page.tsx (15), lib/googleAuth.ts (5), .gitignore (3), app/api/seo/route.ts (3)
-- Suggested starting points: app/api/analytics/route.ts, app/page.tsx, lib/googleAuth.ts, .gitignore, app/api/seo/route.ts, components/dashboard
+- Suggested starting points: app/page.tsx, lib/googleAuth.ts, .gitignore, app/api/seo/route.ts, app/api/analytics/route.ts, components/dashboard
 ## Current Workspace
-- Active file: app/api/analytics/route.ts
+- Active file: app/page.tsx
 - Tracked files in snapshot: 20
 - Top-level areas: [root] (10), app (6), lib (2), components (1), config (1)
 - Primary file types: .ts (7), .json (5), .tsx (3), .md (2), .css (1), .local (1), [no extension] (1)
@@ -39,12 +39,12 @@ Structured manifest: workspace.json
 - Remembered file snapshots: 12
 - Working tree summary: 1 modified
 ## Tracked Snapshots
+- app/page.tsx | 920 lines | 54071 chars | hash 36809faffc2f
+  Last snapshot: 2026-09-09T19:09:08.131Z
+  Preview: "'use client'; / import { useState, useEffect, useRef } from 'react'; / import { Icon } from '../components/Icon'; / const agents = [ / { id: 'brand', name: 'Brand Guardian', role: 'Brand Guardian Agent', desc: 'Bewaki..."
 - app/api/analytics/route.ts | 83 lines | 2774 chars | hash 33ebfa2fcf1a
   Last snapshot: 2026-09-09T18:57:41.485Z
   Preview: "import { NextResponse } from 'next/server'; / import { google } from 'googleapis'; / import { getGoogleAuth } from '@/lib/googleAuth'; / export async function GET(request: Request) { / try { / const { searchParams } =..."
-- app/page.tsx | 913 lines | 54638 chars | hash a176344ebf9e
-  Last snapshot: 2026-09-09T18:46:53.860Z
-  Preview: "'use client'; / import { useState, useEffect, useRef } from 'react'; / import { Icon } from '../components/Icon'; / const agents = [ / { id: 'brand', name: 'Brand Guardian', role: 'Brand Guardian Agent', desc: 'Bewaki..."
 - lib/googleAuth.ts | 39 lines | 1384 chars | hash e8990e9572d1
   Last snapshot: 2026-09-09T08:57:24.340Z
   Preview: "import { google } from 'googleapis'; / export function getGoogleAuth(scopes: string[]) { / const clientEmail = process.env.GOOGLE_CLIENT_EMAIL; / // Voorkeur: base64-encoded key (voorkomt newline/quote-problemen op Ve..."
@@ -65,6 +65,13 @@ Structured manifest: workspace.json
   Preview: "import { Icon } from '../Icon'; / export default function SeoTab({ range, seoKeywords, seoError, onNavigate }: any) { / return ( / <div className="tab-pane"> / <div className="hero-row"> / <div> / <p className="muted"..."
 
 ## Recent Changes
+### 2026-09-09T19:09:08.131Z | saved | app/page.tsx
+- Summary: Line 17: replaced 814 lines with 821 lines.
+- Before: 913 lines | 54,638 chars | hash a176344ebf9e | preview: "'use client'; / import { useState, useEffect, useRef } from 'react'; / import { Icon } from '../components/Icon'; / const agents = [ / { id: 'brand', name: 'Brand Guardian', role: 'Brand Guardian Agent', desc: 'Bewaki..."
+- After: 920 lines | 54,071 chars | hash 36809faffc2f | preview: "'use client'; / import { useState, useEffect, useRef } from 'react'; / import { Icon } from '../components/Icon'; / const agents = [ / { id: 'brand', name: 'Brand Guardian', role: 'Brand Guardian Agent', desc: 'Bewaki..."
+- Previous fragment: ", Bas.", / "Wat gaan we vandaag bouwen, Bas?", / "Klaar om nieuwe resultaten te boeken, Bas?", / "Welke data gaan we vandaag analyseren, Bas?", / "Tijd om knopen door te hakken,..."
+- Current fragment: ".", / "Wat gaan we vandaag bouwen?", / "Klaar om nieuwe resultaten te boeken?", / "Welke data gaan we vandaag analyseren?", / "Tijd om knopen door te hakken." / ]; / interface S..."
+
 ### 2026-09-09T18:57:41.485Z | saved | app/api/analytics/route.ts
 - Summary: Line 17: replaced 24 lines with 53 lines.
 - Before: 54 lines | 1,676 chars | hash cb4165016201 | preview: "import { NextResponse } from 'next/server'; / import { google } from 'googleapis'; / import { getGoogleAuth } from '@/lib/googleAuth'; / export async function GET(request: Request) { / try { / const { searchParams } =..."
@@ -145,13 +152,6 @@ Structured manifest: workspace.json
 - Summary: Created file.
 - After: 0 lines | 0 chars | hash empty
 
-### 2026-08-31T19:35:24.664Z | saved | app/page.tsx
-- Summary: Line 440: replaced 7 lines with 6 lines.
-- Before: 913 lines | 54,834 chars | hash a762a65daab0 | preview: "'use client'; / import { useState, useEffect, useRef } from 'react'; / import { Icon } from '../components/Icon'; / const agents = [ / { id: 'brand', name: 'Brand Guardian', role: 'Brand Guardian Agent', desc: 'Bewaki..."
-- After: 912 lines | 54,631 chars | hash 9f511237c70d | preview: "'use client'; / import { useState, useEffect, useRef } from 'react'; / import { Icon } from '../components/Icon'; / const agents = [ / { id: 'brand', name: 'Brand Guardian', role: 'Brand Guardian Agent', desc: 'Bewaki..."
-- Previous fragment: "style={{borderRadius: '12px', minHeight: '100vh', background: '#fff'}} />; / } / return ( / <div className="shell" style={{borderRadius: '12px'}}> / <style>{` / .shell { border:..."
-- Current fragment: "/>; / } / return ( / <div className="shell"> / <style>{`"
-
 
 ## Hot Files
 - app/page.tsx (15 tracked changes)
@@ -165,9 +165,9 @@ Structured manifest: workspace.json
 
 ## Git Snapshot
 - Branch: main
-- HEAD: 2026-09-09 438353d fixed code
+- HEAD: 2026-09-09 62ad774 fixed code
 - Working tree summary: 1 modified
-- M app/api/analytics/route.ts
+- M app/page.tsx
 
 ## GitHub Snapshot
 GitHub Repository: marketing-smartheads/cgm-dashboard
@@ -175,7 +175,7 @@ Visibility: public | Default branch: main
 Stars: 0 | Forks: 0 | Open issues: 0
 
 Latest commit on main:
-- 438353d by Bas van Dooremalen on 2026-09-09
+- 62ad774 by Bas van Dooremalen on 2026-09-09
   fixed code
 
 URL: https://github.com/marketing-smartheads/cgm-dashboard
