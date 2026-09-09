@@ -2,3 +2,6 @@ node_modules/
 .next/
 .env*.local
 config/service-account.json
+workspace.json 
+workspacememory.md 
+graphify-out/
