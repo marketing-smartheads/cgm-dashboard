@@ -339,6 +339,7 @@ export default function Home() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(params),
       });
+      
       const data = await res.json();
       if (!res.ok || data.error) {
         const errorMsg = typeof data.error === 'string' ? data.error : JSON.stringify(data.error || 'Server error');
