@@ -130,6 +130,16 @@ function UserIcon({ size = 14 }: { size?: number }) {
   );
 }
 
+function MenuIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <line x1="3" y1="6" x2="21" y2="6" />
+      <line x1="3" y1="12" x2="21" y2="12" />
+      <line x1="3" y1="18" x2="21" y2="18" />
+    </svg>
+  );
+}
+
 function PlusIcon() {
   return (
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -142,6 +152,7 @@ function PlusIcon() {
 export default function Home() {
   const [isMounted, setIsMounted] = useState(false);
   const [activeTab, setActiveTab] = useState<string>('Overzicht');
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [selectedAgent, setSelectedAgent] = useState<typeof agents[0] | null>(null);
   const [range, setRange] = useState('30 dagen');
   const [chatInput, setChatInput] = useState('');
@@ -209,6 +220,7 @@ export default function Home() {
 
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
+    setMobileNavOpen(false);
   };
 
   const handleSelectAgent = (agent: typeof agents[0] | null) => {
@@ -455,7 +467,7 @@ export default function Home() {
       <style>{`        
         .workspace { border-radius: 12px !important; overflow: hidden; }
       `}</style>
-      <aside className="sidebar">
+      <aside className={mobileNavOpen ? 'sidebar open' : 'sidebar'}>
         <div className="brand">
           <div className="brand-mark" style={{borderRadius: '8px'}}>D</div>
           <div><strong>Dentadmin</strong><span>AI Growth Hub</span></div>
@@ -470,12 +482,18 @@ export default function Home() {
           <div className="connection"><span className="dot"/>Databronnen verbonden<span>3/3</span></div>
         </div>
       </aside>
+      <div className={mobileNavOpen ? 'nav-overlay open' : 'nav-overlay'} onClick={() => setMobileNavOpen(false)} />
 
       <main className="main">
         <header className="topbar">
           <div>
-            <div className="eyebrow">CGM Performance Platform</div>
-            <h1>{activeTab === 'Agents' ? 'Executive AI Agents Workspace' : activeTab === 'Website' ? 'Website & Analytics' : activeTab === 'SEO' ? 'SEO & Search Console' : activeTab}</h1>
+            <button className="mobile-menu-btn" onClick={() => setMobileNavOpen(true)} title="Menu" aria-label="Open menu">
+              <MenuIcon />
+            </button>
+            <div>
+              <div className="eyebrow">CGM Performance Platform</div>
+              <h1>{activeTab === 'Agents' ? 'Executive AI Agents Workspace' : activeTab === 'Website' ? 'Website & Analytics' : activeTab === 'SEO' ? 'SEO & Search Console' : activeTab}</h1>
+            </div>
           </div>
           <div className="top-actions">
             {activeTab !== 'Agents' && (
@@ -495,7 +513,7 @@ export default function Home() {
                 <div className="updated"><span className="live-dot"/>Live GA4 & Search Console verbonden <span>·</span> {new Date().toLocaleDateString()}</div>
               </div>
 
-              <div style={{display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: '12px', marginBottom: '24px'}}>
+              <div className="quicklinks-grid" style={{marginBottom: '24px'}}>
                 <div onClick={() => handleTabChange('Agents')} style={{background: '#fff', borderRadius: '8px', padding: '16px 20px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '14px', border: '1px solid #e2e8f0', transition: 'background 0.2s ease'}}>
                   <div style={{background: 'rgba(37, 99, 235, 0.1)', color: '#2563eb', padding: '10px', borderRadius: '6px'}}><Icon name="bot" size={20}/></div>
                   <div><h4 style={{fontSize: '14px', fontWeight: '600', color: '#111', marginBottom: '2px'}}>AI Agents Hub</h4><p style={{fontSize: '12px', color: '#6b7280'}}>Start geautomatiseerde taken</p></div>
@@ -556,8 +574,8 @@ export default function Home() {
                 <section className="card" style={{borderRadius: '8px'}}>
                   <div className="card-head"><div><h3>Top pagina&apos;s</h3><p>Rechtstreeks uit GA4</p></div></div>
                   <div className="table">
-                    {topPages.length > 0 ? topPages.map((p) => (
-                      <div className="row" key={p[0]}>
+                    {topPages.length > 0 ? topPages.map((p, idx) => (
+                      <div className="row" key={`${p[1]}-${idx}`}>
                         <div><strong>{p[0]}</strong><span>{p[1]}</span></div>
                         <b>{p[2]}</b>
                         <small style={{color: '#10b981', fontWeight: 600}}>{p[3]}</small>
@@ -576,8 +594,8 @@ export default function Home() {
                     </div>
                   ) : (
                     <div className="table">
-                      {seoKeywords.map((k) => (
-                        <div className="row keyword" key={k[0]}>
+                      {seoKeywords.map((k, idx) => (
+                        <div className="row keyword" key={`${k[0]}-${idx}`}>
                           <div><strong>{k[0]}</strong><span>{k[1]}</span></div>
                           <b>{k[2]}</b>
                           <small style={{color: '#2563eb', fontWeight: 600}}>{k[3]} ctr</small>
@@ -597,7 +615,7 @@ export default function Home() {
                 <div className="updated"><span className="live-dot"/>Live GA4 Verbonden</div>
               </div>
 
-              <div style={{display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: '12px'}}>
+              <div className="quicklinks-grid">
                 <div onClick={() => handleTabChange('Agents')} style={{background: '#fff', borderRadius: '8px', padding: '16px 20px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '14px', border: '1px solid #e2e8f0'}}>
                   <div style={{background: 'rgba(37, 99, 235, 0.1)', color: '#2563eb', padding: '10px', borderRadius: '6px'}}><Icon name="bot" size={20}/></div>
                   <div><h4 style={{fontSize: '14px', fontWeight: '600', color: '#111', marginBottom: '2px'}}>AI Agents Hub</h4><p style={{fontSize: '12px', color: '#6b7280'}}>Start geautomatiseerde taken</p></div>
@@ -645,7 +663,7 @@ export default function Home() {
                 <div className="updated"><span className="live-dot" style={{ background: '#94a3b8' }}/>Binnenkort beschikbaar</div>
               </div>
 
-              <div style={{display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: '12px'}}>
+              <div className="quicklinks-grid">
                 <div onClick={() => handleTabChange('Agents')} style={{background: '#fff', borderRadius: '8px', padding: '16px 20px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '14px', border: '1px solid #e2e8f0'}}>
                   <div style={{background: 'rgba(37, 99, 235, 0.1)', color: '#2563eb', padding: '10px', borderRadius: '6px'}}><Icon name="bot" size={20}/></div>
                   <div><h4 style={{fontSize: '14px', fontWeight: '600', color: '#111', marginBottom: '2px'}}>AI Agents Hub</h4><p style={{fontSize: '12px', color: '#6b7280'}}>Start geautomatiseerde taken</p></div>
@@ -670,8 +688,8 @@ export default function Home() {
                   </div>
                 ) : (
                   <div className="table" style={{marginTop: '16px'}}>
-                    {seoKeywords.map((k) => (
-                      <div className="row keyword" key={k[0]}>
+                    {seoKeywords.map((k, idx) => (
+                      <div className="row keyword" key={`${k[0]}-${idx}`}>
                         <div><strong>{k[0]}</strong><span>{k[1]}</span></div>
                         <b>{k[2]} klikken</b>
                         <small style={{color: '#2563eb', fontWeight: 600}}>{k[3]} CTR</small>
@@ -764,6 +782,21 @@ export default function Home() {
 
                 @keyframes msgIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
                 @keyframes dotPulse { 0%, 60%, 100% { opacity: 0.3; transform: scale(0.85); } 30% { opacity: 1; transform: scale(1); } }
+
+                @media (max-width: 700px) {
+                  .workspace { height: calc(100vh - 150px); border-radius: 8px !important; }
+                  .workspace-body { flex-direction: column; }
+                  .session-sidebar { width: 100%; height: 140px; border-left: none; border-top: 1px solid #E2E8F0; order: 2; }
+                  .session-list { flex-direction: row; overflow-x: auto; overflow-y: hidden; }
+                  .session-item { flex: 0 0 auto; min-width: 140px; }
+                  .chatpane { order: 1; min-height: 0; }
+                  .chat-header { padding: 12px 16px; }
+                  .chat-header p { display: none; }
+                  .quickbar { padding: 8px 16px; }
+                  .messages { padding: 16px; }
+                  .composer { padding: 12px 16px; }
+                  .msg-row { max-width: 92%; }
+                }
               `}</style>
 
               <div className="agent-tabs-bar">
